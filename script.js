@@ -47,36 +47,69 @@ const questions = [{ // Questions for h2 tag
 const questionElement = document.getElementById("question");
 const answerButtons = document.getElementById("answer-buttons");
 const nextButton = document.getElementById("next-btn");
+const restartButton = document.getElementById("restart-btn");
 
 let currQuestionIndex = 0;
 let score = 0;
+const userAnswers = [];
 
-function startQuiz(){
+function startQuiz(){ // Intialize the index and score to 0 for use
     currQuestionIndex = 0;
     score = 0;
     nextButton.innerHTML = "Next";
     showQuestions();
 }
 
-function showQuestions(){
-    resetQuiz();
-    let currentQuestion = questions[currQuestionIndex];
-    let questionNum = currQuestionIndex +1;
-    questionElement.innerHTML = questionNum + ". " + currentQuestion.question;
+function showQuestions(){ // Display questions on form
+    resetQuiz(); // First reset the quiz
+    let currentQuestion = questions[currQuestionIndex]; // Set the question index  to the current  question index
+    let questionNum = currQuestionIndex +1; // Iterate by 1 to increase index and change the question
+    questionElement.innerHTML = questionNum + ". " + currentQuestion.question; // Grab the text from the element and format it (1. Question, 2. Question..etc)
 
     currentQuestion.answers.forEach(answer => {
         const button = document.createElement("button");
         button.innerHTML = answer.text
         button.classList.add("btn");
         answerButtons.appendChild(button);
+        if(answer.correct){
+            button.dataset.correct = answer.correct;
+        }
+        button.addEventListener("click", (selectAnswer));
         
     });
 }
 
-function resetQuiz(){
+nextButton.addEventListener("click", showNextQuestion);
+
+function showNextQuestion() {
+    currQuestionIndex++; // Move to the next question
+    if (currQuestionIndex < questions.length) {
+        showQuestions(); // Display the next question
+    } 
+    else {
+        nextButton.style.display = "none";
+        alert("End of quiz! You can review your answers now.");
+        restartButton.style.display = "block";
+    }
+}
+
+function resetQuiz(){ // Hides the answer buttons (answer 1,2,3..etc)
     nextButton.style.display = "none";
     while(answerButtons.firstChild){
         answerButtons.removeChild(answerButtons.firstChild);
+    }
+}
+
+function selectAnswer(e) {
+    const selectedBtn = e.target;
+    userAnswers[currQuestionIndex] = selectedBtn.textContent; // Store user's selected answer
+    Array.from(answerButtons.children).forEach(button => {
+        button.disabled = true;
+    });
+    nextButton.style.display = "block";
+    const isCorrect = selectedBtn.dataset.correct === "true";
+    if (isCorrect) {
+        score++; // Increment score if the correct answer is chosen
     }
 }
 
