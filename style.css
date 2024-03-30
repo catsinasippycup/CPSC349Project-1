@@ -26,6 +26,7 @@ body{
     border: 1px solid #222;
     padding: 10px;
     margin: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 .btn:hover{
     background: #222;
@@ -55,9 +56,8 @@ body{
     cursor: pointer;
     display: none;
 }
-.correct{
-    background: green;
-}
-.incorrect{
-    background: red;
+.selected {
+    background-color: #000000; 
+    color: #fff; 
+    transition: 2ms;
 }

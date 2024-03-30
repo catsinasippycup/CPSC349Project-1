@@ -1,63 +1,113 @@
-const questions = [{ // Questions for h2 tag
+const questions = [{ // Questions for h2 tag. An array that that has objects such as `questions` `answers`
     question: "Who is stronger than Goku?",
     answers: [
-        { text: "Naruto", correct: false},
+        { text: "Naruto", correct: false}, // Answers held in a key value pair. text: "some text" and correct: boolean value of T or F 
         { text: "Vegeta", correct: false},
         { text: "Luffy", correct: false},
         { text: "Nobody is stronger than Goku.", correct: true}
     ]
 },
 {
-    question: "What is a best CPSC class in CSUF?",
+    question: "Which anime studio adapated Fate/Stay Night: Unlimited Blade Works?",
     answers: [
-        { text: "CPSC 349 with Prof Kushwaha", correct: true},
-        { text: "CPSC 471 with Prof Tian", correct: false},
-        { text: "CPSC 240 with Prof McCarthy", correct: false},
-        { text: "CPSC 335 with Prof Shilpa", correct: false}
+        { text: "ufotable", correct: true},
+        { text: "Kyoto Animation", correct: false},
+        { text: "Gainax", correct: false},
+        { text: "Madhouse", correct: false}
     ]
 },
 {
-    question: "When is the best time to find parking in CSUF?",
+    question: "What manga series tells a tale of a young boy becoming a world class boxer?",
     answers: [
-        { text: "9:00 PM", correct: false},
-        { text: "2:00 PM", correct: false},
-        { text: "11:00 AM", correct: true},
-        { text: "7:00 AM", correct: false}
+        { text: "Baki the Grappler", correct: false},
+        { text: "Ashita no Joe", correct: false},
+        { text: "Hajime no Ippo", correct: true},
+        { text: "SLAMDUNK", correct: false}
     ]
 },
 {
-    question: "Where is Pieology located on campus?",
+    question: `Which three series are considered the "Big three" of shonen anime?`,
     answers: [
-        { text: "On State College and Chapman", correct: false} ,
-        { text: "The Titan Student Union", correct: true},
-        { text: "In the Nutwood Structure", correct: false},
-        { text: "ECS Fullerton, CA 92831", correct: false}
+        { text: "One Piece, Naruto and Bleach", correct: true} ,
+        { text: "My Hero Academia, Attack on Titan and Jujitsu Kaisen", correct: true},
+        { text: "Dragon Ball, Yu Yu Hakusho and Fist of the Northstar", correct: false},
+        { text: "Hunter x Hunter, Baki the grappler and Gintama", correct: false}
     ]
 },
 {
-    question: "What is the best Manga that is running right now?",
+    question: "What is the most popular Manga that is running right now?",
     answers: [
         { text: "Jujitsu Kaisen", correct: false},
         { text: "Blue Lock", correct: false},
         { text: "Kagurabachi", correct: false},
         { text: "One Piece", correct: true}
     ]
+},
+{
+    question: "In the Mobile Suit Gundam anime series, what is the most recognized gundam?",
+    answers: [
+        { text: "RX-0", correct: false},
+        { text: "Zaku II", correct: false},
+        { text: "RX-78-2", correct: true},
+        { text: "ASW-G-08", correct: false}
+    ]
+},
+{
+    question: "Who is the author of Dragon Ball?",
+    answers: [
+        { text: "Kentaro Miura", correct: false},
+        { text: "Masashi Kishimoto", correct: false},
+        { text: "Eiichiro Oda", correct: false},
+        { text: "Akira Toriyama", correct: true}
+    ]
+},
+{
+    question: "Which author of shonen mangas is married to the author of Sailor Moon(Naoko Takeuchi)?",
+    answers: [
+        { text: "Berserk - Kentaro Miura", correct: false},
+        { text: "Death Note - Tsugumi Ohba", correct: false},
+        { text: "Hunter x  Hunter - Yoshihiro Togashi", correct: true},
+        { text: "Dragon Ball - Akira Toriyama", correct: false}
+    ]
+},
+{
+    question: "Which anime series from 1997 features a world where humans coexist with creatures?",
+    answers: [
+        { text: "Pokemon", correct: true},
+        { text: "Digimon", correct: false},
+        { text: "Parasyte", correct: false},
+        { text: "Beelzebub ", correct: false}
+    ]
+},
+{
+    question: "Who teaches Naruto Rasengan?",
+    answers: [
+        { text: "Kakashi", correct: false},
+        { text: "Jiraiya", correct: true},
+        { text: "Oibto", correct: false},
+        { text: "Tsunade ", correct: false}
+    ]
 }];
 
+// Consts to refer to in code below
 const questionElement = document.getElementById("question");
 const answerButtons = document.getElementById("answer-buttons");
 const nextButton = document.getElementById("next-btn");
 const restartButton = document.getElementById("restart-btn");
 
-let currQuestionIndex = 0;
-let score = 0;
-const userAnswers = [];
+let currQuestionIndex = 0; // Keeps track of index of questions
+let score = 0; // Score for score
+const userAnswers = []; // Store the user answers to show what they get wrong
 
 function startQuiz(){ // Intialize the index and score to 0 for use
     currQuestionIndex = 0;
     score = 0;
     nextButton.innerHTML = "Next";
     showQuestions();
+
+    // Event listener for quiz
+    nextButton.addEventListener("click", showNextQuestion);
+    restartButton.addEventListener("click", restartQuiz);
 }
 
 function showQuestions(){ // Display questions on form
@@ -66,51 +116,60 @@ function showQuestions(){ // Display questions on form
     let questionNum = currQuestionIndex +1; // Iterate by 1 to increase index and change the question
     questionElement.innerHTML = questionNum + ". " + currentQuestion.question; // Grab the text from the element and format it (1. Question, 2. Question..etc)
 
-    currentQuestion.answers.forEach(answer => {
-        const button = document.createElement("button");
+    currentQuestion.answers.forEach(answer => { // Iterate through array of answer
+        const button = document.createElement("button"); // Create a button and set each button to the whatever text answer has 
         button.innerHTML = answer.text
-        button.classList.add("btn");
-        answerButtons.appendChild(button);
+        button.classList.add("btn"); // Add said created button to btn class
+        answerButtons.appendChild(button); // Append it to the container to display
         if(answer.correct){
             button.dataset.correct = answer.correct;
         }
         button.addEventListener("click", (selectAnswer));
-        
     });
 }
 
-nextButton.addEventListener("click", showNextQuestion);
-
-function showNextQuestion() {
+function showNextQuestion() { // Shows the next question and serves as the overall check if the quiz is done or not
     currQuestionIndex++; // Move to the next question
-    if (currQuestionIndex < questions.length) {
-        showQuestions(); // Display the next question
+    if (currQuestionIndex < questions.length) { // Compare the index to the length of questions display it, once out end the quiz since there is no more questions
+        showQuestions(); 
     } 
     else {
-        nextButton.style.display = "none";
-        alert("End of quiz! You can review your answers now.");
-        restartButton.style.display = "block";
+        endQuiz();
     }
 }
 
-function resetQuiz(){ // Hides the answer buttons (answer 1,2,3..etc)
+function resetQuiz(){ // Hides the answer buttons (answer 1,2,3..etc) and resets the quiz
     nextButton.style.display = "none";
+    restartButton.style.display = "none";
     while(answerButtons.firstChild){
         answerButtons.removeChild(answerButtons.firstChild);
     }
 }
 
-function selectAnswer(e) {
-    const selectedBtn = e.target;
+function restartQuiz() { // Restarts the quiz by setting index to 0 and score back to 0
+    currQuestionIndex = 0;
+    score = 0;
+    startQuiz(); // Start the quiz
+}
+
+function endQuiz() { // Ends the quiz and show restart button to start over. Also show the score of the quiz
+    resetQuiz();
+    questionElement.innerHTML = `Quiz finished! You got ${score} out of ${questions.length} correct.`;
+    restartButton.style.display = "block";
+}
+
+function selectAnswer(e) { // Parameter looks for an e or event 
+    const selectedBtn = e.target; // This case we are looking for a target which is selectedBtn
+    selectedBtn.classList.add("selected");
     userAnswers[currQuestionIndex] = selectedBtn.textContent; // Store user's selected answer
-    Array.from(answerButtons.children).forEach(button => {
+    Array.from(answerButtons.children).forEach(button => { // Iterate through the containers of answer choices and disable all of them once chosen
         button.disabled = true;
     });
-    nextButton.style.display = "block";
+    nextButton.style.display = "block"; // Display the next button and check if the selected answer is right or wrong
     const isCorrect = selectedBtn.dataset.correct === "true";
     if (isCorrect) {
         score++; // Increment score if the correct answer is chosen
     }
 }
 
-startQuiz();
+startQuiz(); // Start the quiz
