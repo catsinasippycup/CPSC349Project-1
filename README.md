@@ -16,7 +16,7 @@ Each question has 4 answer choices, on the left side of each button quiz makers 
 Once the user has created a quiz they can hit submit and take their own custom quiz.
 
 ## Strange Quirks
-A chromium browser is prefered due to how each browser handles `localstorage.clear()` function call such as Firefox.
+A chromium browser is required due to how each browser handles `localstorage.clear()` function call such as Firefox.
 
 Firefox seems to persist the sample questions from `index.html` and doesn't let any new created question appear where as any chromium browser does the opposite and 
 thats why a chromium browser is a requirement.
