@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="title">
+        <h1>Quiz Maker</h1>
+        <p>- Make Your Quiz -</p>
+    </div>
+    <div class="topnav">
+        <a href="#" onclick="transitionPage('index.html')">Take Quiz</a>
+    </div>
+    <div class="container">
+        <h1>Quiz Name</h1>
+        <input type="text" id="qzname" class="textentry"><br><br>
+
+        <h1>How many questions?</h1>
+        <input type="number" id="numqs" class="textentry" min="1" max="20"><br><br>
+    </div>
+
+    <div id="qcontainer"></div>
+
+    <button id="submit-btn" class="button">Submit</button>
+    
+    <script src="create.js"></script>
+</body>
+</html>
