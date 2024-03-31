@@ -163,23 +163,6 @@ function endQuiz() { // Ends the quiz and show restart button to start over. Als
     restartButton.style.display = "block";
 }
 
-// function selectAnswer(e) { // Parameter looks for an e or event 
-//     const selectedBtn = e.target; // This case we are looking for a target which is selectedBtn
-//     selectedBtn.classList.add("selected");
-//     userAnswers[currQuestionIndex] = selectedBtn.textContent; // Store user's selected answer
-//     Array.from(answerButtons.children).forEach(button => { // Iterate through the containers of answer choices and disable all of them once chosen
-//         button.disabled = true;
-//     });
-//     nextButton.style.display = "block"; // Display the next button and check if the selected answer is right or wrong
-//     const isCorrect = selectedBtn.dataset.correct === "true";
-//     if (isCorrect) {
-//         score++; // Increment score if the correct answer is chosen
-//     }
-// }
-
-// Adam Code 
-// Notes - I modified the select function so that you can change your answer before submitting with the [NEXT] button
-
 function selectAnswer(e) // Deselect all other buttons (in case different answer chosen) and select new answer
 {
     Array.from(answerButtons.children).forEach(button => { // Iterate through the containers of answer choices and disable all of them once chosen
