@@ -1,4 +1,4 @@
-const questions = [{ // Questions for h2 tag. An array that that has objects such as `questions` `answers`
+let questions = [{ // Questions for h2 tag. An array that that has objects such as `questions` `answers`
     question: "Who is stronger than Goku?",
     answers: [
         { text: "Naruto", correct: false}, // Answers held in a key value pair. text: "some text" and correct: boolean value of T or F 
@@ -99,7 +99,11 @@ let currQuestionIndex = 0; // Keeps track of index of questions
 let score = 0; // Score for score
 const userAnswers = []; // Store the user answers to show what they get wrong
 
+const makerButton = document.getElementById("");
+let selectedAnswerButton = null; // Keeps track of current answer
+
 function startQuiz(){ // Intialize the index and score to 0 for use
+    getSavedQuestions(); // Get Custom Quiz if any
     currQuestionIndex = 0;
     score = 0;
     nextButton.innerHTML = "Next";
@@ -129,6 +133,7 @@ function showQuestions(){ // Display questions on form
 }
 
 function showNextQuestion() { // Shows the next question and serves as the overall check if the quiz is done or not
+    checkAnswer(); // Check currently selected answer
     currQuestionIndex++; // Move to the next question
     if (currQuestionIndex < questions.length) { // Compare the index to the length of questions display it, once out end the quiz since there is no more questions
         showQuestions(); 
@@ -158,18 +163,54 @@ function endQuiz() { // Ends the quiz and show restart button to start over. Als
     restartButton.style.display = "block";
 }
 
-function selectAnswer(e) { // Parameter looks for an e or event 
+// function selectAnswer(e) { // Parameter looks for an e or event 
+//     const selectedBtn = e.target; // This case we are looking for a target which is selectedBtn
+//     selectedBtn.classList.add("selected");
+//     userAnswers[currQuestionIndex] = selectedBtn.textContent; // Store user's selected answer
+//     Array.from(answerButtons.children).forEach(button => { // Iterate through the containers of answer choices and disable all of them once chosen
+//         button.disabled = true;
+//     });
+//     nextButton.style.display = "block"; // Display the next button and check if the selected answer is right or wrong
+//     const isCorrect = selectedBtn.dataset.correct === "true";
+//     if (isCorrect) {
+//         score++; // Increment score if the correct answer is chosen
+//     }
+// }
+
+// Adam Code 
+// Notes - I modified the select function so that you can change your answer before submitting with the [NEXT] button
+
+function selectAnswer(e) // Deselect all other buttons (in case different answer chosen) and select new answer
+{
+    Array.from(answerButtons.children).forEach(button => { // Iterate through the containers of answer choices and disable all of them once chosen
+        button.classList.remove("selected");
+    });
+   
     const selectedBtn = e.target; // This case we are looking for a target which is selectedBtn
     selectedBtn.classList.add("selected");
+   
+    nextButton.style.display = "block"; // Display the next button
     userAnswers[currQuestionIndex] = selectedBtn.textContent; // Store user's selected answer
-    Array.from(answerButtons.children).forEach(button => { // Iterate through the containers of answer choices and disable all of them once chosen
-        button.disabled = true;
-    });
-    nextButton.style.display = "block"; // Display the next button and check if the selected answer is right or wrong
-    const isCorrect = selectedBtn.dataset.correct === "true";
+    selectedAnswerButton = selectedBtn // Store current selected button
+}
+
+function checkAnswer() 
+{
+    const isCorrect = selectedAnswerButton.dataset.correct === "true";
     if (isCorrect) {
         score++; // Increment score if the correct answer is chosen
     }
+}
+
+function transitionPage(pageName)
+{
+    window.location.href = pageName;
+}
+
+function getSavedQuestions()
+{
+    var savedQs = JSON.parse(localStorage.getItem("CustomQuiz"));
+    if (savedQs != null) { questions = savedQs; }
 }
 
 startQuiz(); // Start the quiz
